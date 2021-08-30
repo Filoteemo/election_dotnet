@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Valgapplikasjon.Models.FaqModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Identity
+@using Valgapplikasjon.Areas.Identity
+@inject SignInManager<ValgapplikasjonUser> SignInManager
+@inject UserManager<ValgapplikasjonUser> UserManager
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Velkommen til FAQ</h1>
+
+@if (User.IsInRole("Admin"))
+{
+
+    <p>
+        <a asp-action="Create">Legg til nytt FAQ innlegg</a>
+    </p>
+}
+<div class="faq_desktop">
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FaqSporsmal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FaqSvar)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <strong>Q:</strong> @Html.DisplayFor(modelItem => item.FaqSporsmal)
+
+                    </td>
+
+                    <td>
+                        <strong>A:</strong> @Html.DisplayFor(modelItem => item.FaqSvar)
+
+                    </td>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.FaqId">Endre</a> |
+                            <a asp-action="Details" asp-route-id="@item.FaqId">Detaljer</a> |
+                            <a asp-action="Delete" asp-route-id="@item.FaqId">Fjern</a>
+
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@* Mobil div for annet layout av faq tabellen*@
+
+<div class="faq_mobile">
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FaqSporsmal)
+                    <strong>og</strong>
+                    @Html.DisplayNameFor(model => model.FaqSvar)
+                </th>
+                <th>
+
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <strong>Q:</strong> @Html.DisplayFor(modelItem => item.FaqSporsmal)
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <strong>A:</strong> @Html.DisplayFor(modelItem => item.FaqSvar)
+
+                    </td>
+                </tr>
+                @if (User.IsInRole("Admin"))
+                {
+                    <tr>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.FaqId">Endre</a> |
+                            <a asp-action="Details" asp-route-id="@item.FaqId">Detaljer</a> |
+                            <a asp-action="Delete" asp-route-id="@item.FaqId">Fjern</a>
+
+                        </td>
+
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@* Denne filen er utviklet av Redjo Husanovic sist endret 25.05.21 *@

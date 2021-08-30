@@ -1,0 +1,116 @@
+@using Microsoft.AspNetCore.Identity
+@using Valgapplikasjon.Areas.Identity
+@inject SignInManager<ValgapplikasjonUser> SignInManager
+@inject UserManager<ValgapplikasjonUser> UserManager
+
+
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ValgApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body >
+    <header>
+        <nav class="navbar navbar-custom navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
+            <div class="container">
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="navbar-brand text-white" asp-controller="Home" asp-action="Index">
+                        <img src="~/bilder/Valgapp_lgo_admin.png" width="100" class="valgapplogo" />
+                    </a>
+                }
+                else
+                {
+                    <a class="navbar-brand text-white" asp-controller="Home" asp-action="Index">
+                        <img src="~/bilder/Valgapp_lgo.png" width="100" class="valgapplogo" />
+                    </a>
+                }
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-custom" asp-controller="Faq"
+                               asp-action="Index">FAQ</a>
+                        </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-custom" asp-area="" asp-controller="Role" asp-action="Index">Roller</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-custom" asp-area="" asp-controller="Admin" asp-action="Index">Brukere</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-custom" asp-area="" asp-controller="UserRoles" asp-action="Index">Bruker-roller</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-custom" asp-controller="Valg"
+                                       asp-action="Index">Valg</a>
+                                </li>
+                            }
+                            if (!User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link nav-link-custom" id="mitt-kandidatur" asp-controller="Kandidat"
+                                       asp-action="Index">Mitt Kandidatur</a>
+                                </li>
+
+                                if (@ViewBag.valgtid < System.DateTime.Now)
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link nav-link-custom btnAvstemmingtUtilgjengelig" href="#">Avstemming</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link nav-link-custom" asp-controller="Valg"
+                                           asp-action="Valgresultat">Valgresultat</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link nav-link-custom" asp-controller="Kandidat" asp-action="Avstemming">Avstemming</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link nav-link-custom btnValgresultatUtilgjengelig" href="#">Valgresultat</a>
+                                    </li>
+                                }
+                            }
+                        }
+                        <li>
+                            <partial name="_LoginPartial.cshtml" />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer-custom footer text-muted">
+        <div class="container">
+            <p class="copyright"> &copy; - Gruppe v7 - USN</p>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="~/lib/bootbox/bootbox.all.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

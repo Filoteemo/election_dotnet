@@ -1,0 +1,161 @@
+﻿@using Controllers;
+@using Data;
+@model IEnumerable<Valgapplikasjon.Models.BrukerKandidatViewModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@using Microsoft.AspNetCore.Identity
+@using Valgapplikasjon.Enums
+@namespace Valgapplikasjon.Areas.Identity
+
+@inject UserManager<ValgapplikasjonUser> UserManager
+
+@{
+    ViewData["Title"] = "Avstemming";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    string valg = "";
+}
+
+@*Dette viewet viser resultatet av valget*@
+<h2>Valgresultat</h2> <br />
+@foreach (var m in Model)
+{
+    valg = m.ValgVm.Tittel;
+}
+<h3>@valg</h3> <br>
+<div class="mittkandidatur_desktop">
+    <table class="table table-striped">
+        <tr>
+            <th></th>
+            <th>Kandidat</th>
+            <th>Ansettelse</th>
+            <th>Fakultet</th>
+            <th>Institutt</th>
+            <th>Campus</th>
+            <th>Antall stemmer</th>
+        </tr>
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <div class="kandidatbilde_valg">
+                        @if (item.usersVm.Profilbilde != null)
+                        {
+                            <img src="data:image/*;base64,@(Convert.ToBase64String(item.usersVm.Profilbilde))">
+                        }
+                        @if (item.usersVm.Profilbilde == null)
+                        {
+                            <img src="~/bilder/ArnulfStorseth.jpg">
+                        }
+                    </div>
+                    @if (item.KandidatStemmer.VoteCount == ViewBag.voteCountMax)
+                    {
+
+                        <p style="color:tomato">Vunnet</p>
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.usersVm.Fornavn) @Html.DisplayFor(modelItem => item.usersVm.Etternavn)</td>
+                <td>@Html.DisplayFor(modelItem => item.kandidaterVm.Ansettelse)</td>
+                <td>@Html.DisplayFor(modelItem => item.kandidaterVm.Fakultet)</td>
+                <td>@Html.DisplayFor(modelItem => item.kandidaterVm.Institutt)</td>
+                <td>@Html.DisplayFor(modelItem => item.kandidaterVm.Campus)</td>
+                <td>@Html.DisplayFor(modelItem => item.KandidatStemmer.VoteCount)</td>
+            </tr>
+        }
+    </table>
+</div>
+
+<div class="valgresultat_mobil">
+    @*Bootstrap karrusell som viser alle deltakere i valget med en utnevnt vinner*@
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                @foreach (var item in Model)
+                {
+                    @if (item.KandidatStemmer.VoteCount == ViewBag.voteCountMax)
+                    {
+                        @if (item.usersVm.Profilbilde != null)
+                        {
+                            <img src="data:image/*;base64,@(Convert.ToBase64String(item.usersVm.Profilbilde))" style="width: 200px; height: 200px;">
+                        }
+                        @if (item.usersVm.Profilbilde == null)
+                        {
+                            <img src="~/bilder/ArnulfStorseth.jpg" style="width: 200px; height: 200px;">
+                        }
+                <ul class="valgresultat_mobil_karrusel_liste">
+                    <li>
+                        <strong> Navn: </strong>@Html.DisplayFor(modelItem => item.usersVm.Fornavn) @Html.DisplayFor(modelItem => item.usersVm.Etternavn)
+                    </li>
+                    <li>
+                        <strong> Ansettelse: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Ansettelse)
+                    </li>
+                    <li>
+                        <strong> Fakultet: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Fakultet)
+                    </li>
+                    <li>
+                        <strong> Institutt: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Institutt)
+                    </li>
+                    <li>
+                        <strong> Campus: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Campus)
+                    </li>
+                    <li>
+                        <strong> Stemmer: </strong> @Html.DisplayFor(modelItem => item.KandidatStemmer.VoteCount)
+                    </li>
+                    <li style="color:tomato">Vunnet</li>
+                </ul>
+                }
+            }
+            </div>
+            @foreach (var kan in Model)
+            {
+                @if (kan.KandidatStemmer.VoteCount != ViewBag.voteCountMax)
+                {
+                    <div class="carousel-item">
+                            @if (kan.usersVm.Profilbilde != null)
+                            {
+                                <img src="data:image/*;base64,@(Convert.ToBase64String(kan.usersVm.Profilbilde))" style="width: 200px; height: 200px;">
+                            }
+                            @if (kan.usersVm.Profilbilde == null)
+                            {
+                                <img src="~/bilder/ArnulfStorseth.jpg" style="width: 200px; height: 200px;">
+                            }
+                    <ul class="valgresultat_mobil_karrusel_liste">
+                        <li>
+                            <strong> Navn: </strong> @Html.DisplayFor(modelItem => kan.usersVm.Fornavn) @Html.DisplayFor(modelItem => kan.usersVm.Etternavn)
+                        </li>
+                        <li>
+                            <strong> Ansettelse: </strong> @Html.DisplayFor(modelItem => kan.kandidaterVm.Ansettelse)
+                        </li>
+                        <li>
+                            <strong> Fakultet: </strong> @Html.DisplayFor(modelItem => kan.kandidaterVm.Fakultet)
+                        </li>
+                        <li>
+                            <strong> Institutt: </strong> @Html.DisplayFor(modelItem => kan.kandidaterVm.Institutt)
+                        </li>
+                        <li>
+                            <strong> Campus: </strong> @Html.DisplayFor(modelItem => kan.kandidaterVm.Campus)
+                        </li>
+                        <li>
+                            <strong> Stemmer: </strong> @Html.DisplayFor(modelItem => kan.KandidatStemmer.VoteCount)
+                        </li>
+                    </ul>
+                    </div>
+                 }
+             }
+            </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+
+    @* Denne filen er utviklet av Sindre Olsen sist endret 28.05.21 *@

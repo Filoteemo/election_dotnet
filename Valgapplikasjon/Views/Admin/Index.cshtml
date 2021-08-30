@@ -1,0 +1,68 @@
+﻿@using Valgapplikasjon.Areas.Identity
+@model IEnumerable<ValgapplikasjonUser>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h1>Brukere</h1>
+
+<div class="valg_mobile">
+    <input type="text" id="tableInput_mobile" oninput="tableMobile()" placeholder="Søk etter brukere..">
+    <table id="table_mobile" class="table table-sm table-bordered">
+
+        @foreach (ValgapplikasjonUser user in Model)
+        {
+            <tr class="admin_usr_tr">
+                <td>
+                    <div class="valg_tittel">
+                        <h1>@Html.DisplayFor(modelItem => user.UserName)</h1>
+                    </div>
+                    <hr>
+                    <p>
+                        <strong>Fornavn: </strong>@Html.DisplayFor(modelItem => user.Fornavn)
+                        <br>
+                        <strong>Etternavn: </strong>@Html.DisplayFor(modelItem => user.Etternavn)
+                        <br>
+                        <strong>Brukernavn: </strong>@Html.DisplayFor(modelItem => user.UserName)
+                        <br>
+                        <strong>ID: </strong>@Html.DisplayFor(modelItem => user.Id)
+                        <br>
+
+                    </p>
+                    <ul class="valg_liste">
+                        <li>
+                            <form asp-action="Delete" asp-route-id="@user.Id" method="post">
+                                <button name="@user.UserName" type="submit" class="btn btn-sm btn-danger btnSlettBruker">
+                                    Slett
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        }
+    </table>
+    <hr>
+</div>
+
+<div class="valg_desktop">
+    <input type="text" id="brukerRolleTableInput" onkeyup="brukerRolleTable()" placeholder="Søk etter brukere..">
+    <table id="brukerRolleTable" class="table table-striped">
+
+        <tr><th>Fornavn</th><th>Etternavn</th><th>Brukernavn</th><th>ID</th><th></th></tr>
+            @foreach (ValgapplikasjonUser user in Model)
+            {
+    <tr>
+        <td>@user.Fornavn</td>
+        <td>@user.Etternavn</td>
+        <td>@user.UserName</td>
+        <td>@user.Id</td>
+        <td>
+            <form asp-action="Delete" asp-route-id="@user.Id" method="post">
+                <button name="@user.UserName" type="submit" class="btn btn-sm btn-danger btnSlettBruker">
+                    Slett
+                </button>
+            </form>
+        </td>
+    </tr>
+            }
+        </table>
+</div>

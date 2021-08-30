@@ -1,0 +1,103 @@
+﻿
+@model IEnumerable<Valgapplikasjon.Models.BrukerKandidatViewModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@using Microsoft.AspNetCore.Identity
+@using Valgapplikasjon.Areas.Identity
+@inject UserManager<ValgapplikasjonUser> UserManager
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<ul class="mittkandidatur_liste">
+    <li> <a asp-action="Create">Registrer kandidatur </a></li>
+    @foreach (var item in Model)
+    {
+
+
+        @if (item.kandidaterVm.Id == @UserManager.GetUserId(User))
+        {
+
+            <li>
+                <a asp-action="Edit" asp-route-id="@item.kandidaterVm.KandidatId">Endre kandidatur</a>
+            </li>
+            <li>
+                <a asp-action="Delete" asp-route-id="@item.kandidaterVm.KandidatId">Slett kandidatur</a> <br />
+            </li>
+            <li><p>Start nominering @Html.DisplayFor(modelItem => item.ValgVm.StartNominering) <br /> Slutt nominering @Html.DisplayFor(modelItem => item.ValgVm.SluttNominering)</p></li>
+
+            @* <a asp-action="Details" asp-route-id="@item.KandidatId">Detaljer</a> <br />*@
+        }
+    }
+</ul>
+
+    <div class="mittkandidatur_desktop">
+        <table class="table table-striped">
+            <tr>
+                <th>Email</th>
+                <th>Fornavn</th>
+                <th>Etternavn</th>
+                <th>Ansettelse</th>
+                <th>Fakultet</th>
+                <th>Institutt</th>
+                <th>Campus</th>
+                <th>Valg</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                @if (item.kandidaterVm.Id == @UserManager.GetUserId(User))
+                {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.usersVm.Email)</td>
+            <td>@Html.DisplayFor(modelItem => item.usersVm.Fornavn)</td>
+            <td>@Html.DisplayFor(modelItem => item.usersVm.Etternavn)</td>
+            <td>@Html.DisplayFor(modelItem => item.kandidaterVm.Ansettelse)</td>
+            <td>@Html.DisplayFor(modelItem => item.kandidaterVm.Fakultet)</td>
+            <td>@Html.DisplayFor(modelItem => item.kandidaterVm.Institutt)</td>
+            <td>@Html.DisplayFor(modelItem => item.kandidaterVm.Campus)</td>
+            <td>@Html.DisplayFor(modelItem => item.ValgVm.Tittel)</td>
+        </tr>
+                }
+            }
+        </table>
+    </div>
+    <div class="mittkandidatur_mobile">
+        @foreach (var item in Model)
+        {
+            @if (item.kandidaterVm.Id == @UserManager.GetUserId(User))
+            {
+                <form class="kandidatformA">
+                    <div class="kandidatbilde">
+                        @if (item.usersVm.Profilbilde != null)
+                        {
+                            <img src="data:image/*;base64,@(Convert.ToBase64String(item.usersVm.Profilbilde))">
+                        }
+                        @if (item.usersVm.Profilbilde == null)
+                        {
+                            <img src="~/bilder/ArnulfStorseth.jpg">
+                        }
+                    </div>
+                    <hr>
+                    <p>
+                        <strong>Fornavn: </strong>@Html.DisplayFor(modelItem => item.usersVm.Fornavn)
+                        <br>
+                        <strong>Etternavn: </strong>@Html.DisplayFor(modelItem => item.usersVm.Etternavn)
+                        <br>
+                        <strong>Ansettelse: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Ansettelse)
+                        <br>
+                        <strong>Fakultet: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Fakultet)
+                        <br>
+                        <strong>Institutt: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Institutt)
+                        <br>
+                        <strong>Campus: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Campus)
+                        <br>
+                        <strong>Valg: </strong>@Html.DisplayFor(modelItem => item.ValgVm.Tittel)
+                        <br>
+                    </p>
+                </form>
+            }
+        }
+    </div>
+
+    @* Denne filen er utviklet av Sindre Olsen sist endret 09.05.21 *@

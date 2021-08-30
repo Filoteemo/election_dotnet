@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Valgapplikasjon.Areas.Identity
+
+@inject SignInManager<ValgapplikasjonUser> SignInManager
+@inject UserManager<ValgapplikasjonUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        // Henter fornavn, etternavn og profilbilde fra innlogget bruker
+        var fornavn = UserManager.GetUserAsync(User).Result.Fornavn;
+        var etternavn = UserManager.GetUserAsync(User).Result.Etternavn;
+        var profilbilde = UserManager.GetUserAsync(User).Result.Profilbilde;
+
+        <li class="nav-item-loggut">
+            @*Egen klasse for denne linken pga form og button attr*@
+            <form class="nav-link nav-link-custom" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="nav-link btn btn-link text-white">Logg ut</button>
+            </form>
+        </li>
+
+        @*Viser fornavn, etternavn og profilbilde i stedet for bare brukernavn*@
+        <li class="nav-item">
+            <a id="manage" class="nav-link nav-link-custom" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                @if (profilbilde != null)
+                {
+                    <img style="width:35px;height:35px; object-fit:cover; border-radius:25px" src="data:image/*;base64,@(Convert.ToBase64String(profilbilde))">
+                }
+                &nbsp;@fornavn @etternavn
+            </a>
+        </li>
+
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link nav-link-custom" id="register" asp-area="Identity" asp-page="/Account/Register">Ny bruker</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link nav-link-custom" id="login" asp-area="Identity" asp-page="/Account/Login">Logg inn</a>
+        </li>
+    }
+</ul>

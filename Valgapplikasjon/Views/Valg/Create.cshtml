@@ -1,0 +1,60 @@
+﻿@model Valgapplikasjon.Models.ValgModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Registrer nytt valg</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Tittel" class="control-label"></label>
+                <input asp-for="Tittel" class="form-control" />
+                <span asp-validation-for="Tittel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartNominering" class="control-label"></label>
+                <input asp-for="StartNominering" class="form-control" />
+                <span asp-validation-for="StartNominering" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SluttNominering" class="control-label"></label>
+                <input asp-for="SluttNominering" class="form-control" />
+                <span asp-validation-for="SluttNominering" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartAvstemming" class="control-label"></label>
+                <input asp-for="StartAvstemming" class="form-control" />
+                <span asp-validation-for="StartAvstemming" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SluttAvstemming" class="control-label"></label>
+                <input asp-for="SluttAvstemming" class="form-control" />
+                <span asp-validation-for="SluttAvstemming" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kontrollert" class="control-label"></label>
+                <input asp-for="Kontrollert" class="form-control" />
+                <span asp-validation-for="Kontrollert" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Registrer" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Tilbake til valgoversikt</a>
+</div>
+<br />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

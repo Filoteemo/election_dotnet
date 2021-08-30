@@ -1,0 +1,38 @@
+﻿@model Valgapplikasjon.Models.FaqModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Lag et nytt FAQ innlegg</h1>
+
+<h4>Legg til spørsmål og svar</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FaqSporsmal" class="control-label"></label>
+                <input asp-for="FaqSporsmal" class="form-control" />
+                <span asp-validation-for="FaqSporsmal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FaqSvar" class="control-label"></label>
+                <input asp-for="FaqSvar" class="form-control" />
+                <span asp-validation-for="FaqSvar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Legg til" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Tilbake til FAQ</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

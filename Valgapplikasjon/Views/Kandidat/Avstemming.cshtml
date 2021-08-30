@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Valgapplikasjon.Models.BrukerKandidatViewModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@using Microsoft.AspNetCore.Identity
+@using Valgapplikasjon.Enums
+@namespace Valgapplikasjon.Areas.Identity
+
+@inject UserManager<ValgapplikasjonUser> UserManager
+
+@{
+    ViewData["Title"] = "Avstemming";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<h2>Avstemming</h2>
+
+@*Her kan brukeren filtrere på kandidater*@
+<div class="finnKandidat">
+    <form asp-controller="Kandidat" asp-action="Avstemming">
+        <label for="fakultetValg">Velg fakultet</label><br>
+        <select id="fakultetValg" class="kandidatSøk" name="fakultet" asp-items="ViewBag.selectFakulteter">
+            <option value="">Alle</option>
+        </select><br>
+
+        <label for="instituttValg">Velg institutt</label><br>
+        <select for="instituttValg" id="instituttValg" class="kandidatSøk" name="institutt" asp-items="ViewBag.selectInstitutter">
+            <option selected="selected" value="">Alle</option>
+        </select>
+
+        <label for="campus">Velg campus</label> <br />
+        <select for="campus" id="campus_select" class="kandidatSøk" name="campus" asp-items="ViewBag.selectCampuser">
+            <option selected="selected" value="">Alle</option>
+        </select>
+        <br />
+
+        <label for="kandidatSok">Søk etter kandidat</label><br>
+        <input type="text" id="kandidatSok" class="kandidatSøk" name="navn">
+        <div class="kandidatsok_knapp_parent">
+            <input type="submit" name="sok" id="kandidatsok_knapp" value="SØK" />
+        </div>
+    </form>
+</div>
+
+@*Viser hver kandidat registrert til valget*@
+<div class="aFormer">
+    @foreach (var item in Model)
+    {
+        <form class="kandidatformA" asp-controller="Kandidat" asp-action="Stem">
+            <div class="kandidatbilde">
+                @if (item.usersVm.Profilbilde != null)
+                {
+                    <img src="data:image/*;base64,@(Convert.ToBase64String(item.usersVm.Profilbilde))">
+                }
+                @if (item.usersVm.Profilbilde == null)
+                {
+                    <img src="~/bilder/ArnulfStorseth.jpg">
+                }
+            </div>
+            <hr>
+            <p>
+                <input type="number" asp-for="@item.KandidatStemmer.KandidatStemmeId" name="KandidatStemmeId" value="@item.KandidatStemmer.KandidatStemmeId" hidden />
+                <input type="number" name="VoteCount" value="1" hidden />
+                <strong>Fornavn: </strong>@Html.DisplayFor(modelItem => item.usersVm.Fornavn)
+                <br>
+                <strong>Etternavn: </strong>@Html.DisplayFor(modelItem => item.usersVm.Etternavn)
+                <br>
+                <strong>Ansettelse: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Ansettelse)
+                <br>
+                <strong>Fakultet: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Fakultet)
+                <br>
+                <strong>Institutt: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Institutt)
+                <br>
+                <strong>Campus: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Campus)
+                <br>
+                <strong> <a asp-action="KandidatDetaljer" asp-route-KandidatId="@item.kandidaterVm.KandidatId">Les mer</a></strong>
+            </p>
+
+            @*Sjekker om brukeren har stemt eller ikke basert på HasVoted felt i User tabellen*@
+            @if (!user.HasVoted)
+            {
+                <input name="@Html.DisplayFor(modelItem => item.usersVm.Fornavn) @Html.DisplayFor(modelItem => item.usersVm.Etternavn)" type="submit" value="Stem" class="formknapp btnStemmer">
+            }
+            else
+            {
+                <input type="button" value="Stem" class="formknapp btnHarStemt">
+            }
+
+
+        </form>
+    }
+</div>
+
+
+@* Denne filen er utviklet av Sindre Olsen sist endret 03.06.21 *@

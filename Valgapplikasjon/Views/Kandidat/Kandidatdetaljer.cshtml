@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Valgapplikasjon.Models.BrukerKandidatViewModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@using Microsoft.AspNetCore.Identity
+@using Valgapplikasjon.Enums
+@namespace Valgapplikasjon.Areas.Identity
+
+@inject UserManager<ValgapplikasjonUser> UserManager
+
+@{
+    ViewData["Title"] = "Avstemming";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<h2>Kandidatinformasjon</h2>
+
+@*Dette viewet viser detaljert informasjon om hver kandidat*@
+<div class="kandidatdetaljer_desktop">
+    @foreach (var item in Model)
+    {
+        <table class="kandidatdetaljer_table_desktop">
+            <tr>
+                <td>
+                    <div class="kandidatdetaljer_bilde">
+                        @if (item.usersVm.Profilbilde != null)
+                        {
+                            <img src="data:image/*;base64,@(Convert.ToBase64String(item.usersVm.Profilbilde))">
+                        }
+                        @if (item.usersVm.Profilbilde == null)
+                        {
+                            <img src="~/bilder/ArnulfStorseth.jpg">
+                        }
+                    </div>
+                </td>
+                <td>
+                    <p>
+                        <strong>Navn: </strong>@Html.DisplayFor(modelItem => item.usersVm.Fornavn) @Html.DisplayFor(modelItem => item.usersVm.Etternavn)
+                        <br>
+                        <strong>Ansettelse: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Ansettelse)
+                        <br>
+                        <strong>Fakultet: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Fakultet)
+                        <br>
+                        <strong>Institutt: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Institutt)
+                        <br>
+                        <strong>Campus: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Campus)
+                        <br>
+                        <strong>Antall stemmer: </strong>@Html.DisplayFor(modelItem => item.KandidatStemmer.VoteCount)
+                        <br>
+                    </p>
+                </td>
+            </tr>
+        </table> <br />
+                 <p>
+                     <strong>Bio:</strong>  @Html.DisplayFor(modelItem => item.usersVm.Bio) <br />
+                     <a asp-controller="Kandidat" asp-action="Avstemming">Tilbake til oversikt</a>
+                 </p>
+    }
+</div>
+
+<div class="kandidatdetaljer_mobil">
+    @foreach (var item in Model)
+    {
+        <table class="kandidatdetaljer_table_mobil">
+            <tr>
+                <td>
+                    <div class="kandidatdetaljer_bilde">
+                        @if (item.usersVm.Profilbilde != null)
+                        {
+                            <img src="data:image/*;base64,@(Convert.ToBase64String(item.usersVm.Profilbilde))">
+                        }
+                        @if (item.usersVm.Profilbilde == null)
+                        {
+                            <img src="~/bilder/ArnulfStorseth.jpg">
+                        }
+                    </div>
+                </td>
+            <tr>
+                <td>
+                    <p>
+                        <strong>Navn: </strong>@Html.DisplayFor(modelItem => item.usersVm.Fornavn) @Html.DisplayFor(modelItem => item.usersVm.Etternavn)
+                        <br>
+                        <strong>Ansettelse: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Ansettelse)
+                        <br>
+                        <strong>Fakultet: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Fakultet)
+                        <br>
+                        <strong>Institutt: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Institutt)
+                        <br>
+                        <strong>Campus: </strong>@Html.DisplayFor(modelItem => item.kandidaterVm.Campus)
+                        <br>
+                        <strong>Antall stemmer: </strong>@Html.DisplayFor(modelItem => item.KandidatStemmer.VoteCount)
+                        <br>
+                    </p>
+                </td>
+            </tr>
+        </table>
+        <p class="kandidatdetaljer_mobil_bio">
+            <strong>Bio:</strong>  @Html.DisplayFor(modelItem => item.usersVm.Bio) <br />
+            <a asp-controller="Kandidat" asp-action="Avstemming" class="btn btn-dark">Tilbake til oversikt</a>
+        </p>
+    }
+</div>
+
+
+@* Denne filen er utviklet av Sindre Olsen sist endret 03.06.21 *@

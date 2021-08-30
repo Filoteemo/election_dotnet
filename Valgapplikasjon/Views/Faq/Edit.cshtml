@@ -1,0 +1,38 @@
+﻿@model Valgapplikasjon.Models.FaqModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Endre FAQ innlegg</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="FaqId" />
+            <div class="form-group">
+                <label asp-for="FaqSporsmal" class="control-label"></label>
+                <input asp-for="FaqSporsmal" class="form-control" />
+                <span asp-validation-for="FaqSporsmal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FaqSvar" class="control-label"></label>
+                <input asp-for="FaqSvar" class="form-control" />
+                <span asp-validation-for="FaqSvar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Lagre" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Tilbake til FAQ</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,96 @@
+﻿@using Valgapplikasjon.Models;
+@using Valgapplikasjon.Data;
+@model Valgapplikasjon.Models.MittKandidaturModel;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@using Microsoft.AspNetCore.Identity
+@using Valgapplikasjon.Areas.Identity
+@inject UserManager<ValgapplikasjonUser> UserManager
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+
+    var institutter = new Institutter().Institutt.OrderBy(p => p.Substring(0)).ToList();
+    ViewBag.selectInstitutter = new SelectList(institutter);
+
+    var campuser = new Campuser().Campus.OrderBy(p => p.Substring(0)).ToList();
+    ViewBag.selectCampuser = new SelectList(campuser);
+
+    var fakulteter = new Fakulteter().Fakultet.OrderBy(p => p.Substring(0)).ToList();
+    ViewBag.selectFakulteter = new SelectList(fakulteter);
+}
+
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h4>Registrer deg som kandidat</h4>
+<p class="text-danger">
+    Registrering av kandidatur vil ikke være mulig før nomineringen har startet.<br />
+</p>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" value="@UserManager.GetUserId(User)" readonly />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @{
+                    var valg = ViewData["valginfo"] as List<ValgModel>;
+                }
+                <label asp-for="ValgId" class="control-label">Valg</label>
+                <select asp-for="ValgId" class="form-control">
+                    @foreach (var valgitem in valg)
+                    {
+                        <option value="@valgitem.ValgId">@valgitem.Tittel</option>
+                    }
+                </select>
+                <span asp-validation-for="ValgId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ansettelse" class="control-label"></label>
+                <input asp-for="Ansettelse" class="form-control" />
+                <span asp-validation-for="Ansettelse" class="text-danger"></span>
+            </div><br />
+            <div class="form-group">
+                <label asp-for="Fakultet" class="control-label"></label>
+                <select asp-for="Fakultet" class="form-control" asp-items="ViewBag.selectFakulteter">
+                </select>
+                <span asp-validation-for="Fakultet" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Institutt" class="control-label"></label>
+                <select asp-for="Institutt" class="form-control" asp-items="ViewBag.selectInstitutter"></select>
+                <span asp-validation-for="Institutt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Campus" class="control-label"></label>
+                <select asp-for="Campus" class="form-control" asp-items="ViewBag.selectCampuser"></select>
+                <span asp-validation-for="Campus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Registrer" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<p class="text-danger">
+    NB! Hvis du allerede er registrert som kandidat kan du ikke registrere deg på nytt.<br />
+    Ønsker du å redigere ditt kandidatur kan du gjøre dette fra oversikten.
+</p>
+
+<div class="btn-custom">
+    <a asp-action="Index" class="btn btn-dark">Tilbake til oversikt</a>
+</div>
+<br />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@* Denne filen er utviklet av Sindre Olsen sist endret 15.04.21 *@

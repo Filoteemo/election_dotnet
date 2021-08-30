@@ -1,0 +1,82 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Valgapplikasjon.Areas.Identity
+@inject SignInManager<ValgapplikasjonUser> SignInManager
+@inject UserManager<ValgapplikasjonUser> UserManager
+@{
+    Layout = "_Layout";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Rektorvalget 2021</h1>
+    <p>I juni 2021 gjennomføres det valg av rektor/prorektor for perioden august 2021 til og med juli 2025</p>
+    <hr /><br />
+          <div class="info">
+              @*Hvis en bruker IKKE er logget inn*@
+              @if (!SignInManager.IsSignedIn(User))
+              {
+                  <h1>
+                      <a class="nav-link nav-link-custom" asp-controller="Kandidat"
+                         asp-action="Avstemming">Avstemming</a>
+                  </h1><br />
+                  <img class="pilopp" src="~/bilder/pilopp.png" alt="">
+                  <p>Klikk på avstemming og finn den du ønsker å stemme på. Det er bare usn ansatte og studenter som kan stemme.</p>
+                  <hr><br />
+                  <h1>
+                      <a class="nav-link nav-link-custom" asp-controller="Valg"
+                         asp-action="Valgresultat" onclick="return melding2()">Valgresultat</a>
+                  </h1><br />
+                  <img class="pilopp" src="~/bilder/pilopp.png" alt="">
+                  <p> Klikk på valgresultat. Når valget er over vil resultatet være tilgjengelig.</p>
+                  <hr> <br />
+                  <h1>
+                      <a class="nav-link nav-link-custom" asp-area="Identity" asp-page="/Account/Login"> Registrer deg</a>
+                  </h1><br />
+                  <img class="pilopp" src="~/bilder/pilopp.png" alt="">
+                  <p>Klikk på registrer deg, velg "Ny Bruker" og registrer deg med USN-adressen din.</p>
+                  <hr><br />
+              }
+              else
+              {
+                  @*Kontrollerer for om valget er ferdig eller ikke og setter linker tilgjengelig basert på det*@
+                  if (@ViewBag.valgtid < System.DateTime.Now)
+                  {
+                      <h1>
+                          <a class="nav-link nav-link-custom btnAvstemmingtUtilgjengelig" href="#">Avstemming</a>
+                      </h1><br />
+                      <img class="pilopp" src="~/bilder/pilopp.png" alt="">
+                      <p>Klikk på avstemming og finn den du ønsker å stemme på. Det er bare usn ansatte og studenter som kan stemme.</p>
+                      <hr><br />
+                      <h1>
+                          <a class="nav-link nav-link-custom" asp-controller="Valg"
+                             asp-action="Valgresultat">Valgresultat</a>
+                      </h1><br />
+                      <img class="pilopp" src="~/bilder/pilopp.png" alt="">
+                      <p> Klikk på valgresultat. Når valget er over vil resultatet være tilgjengelig.</p>
+                  }
+                  else
+                  {
+                      <h1>
+                          <a class="nav-link nav-link-custom" asp-controller="Kandidat"
+                             asp-action="Avstemming">Avstemming</a>
+                      </h1><br />
+                      <img class="pilopp" src="~/bilder/pilopp.png" alt="">
+                      <p>Klikk på avstemming og finn den du ønsker å stemme på. Det er bare usn ansatte og studenter som kan stemme.</p>
+                      <hr><br />
+                      <h1>
+                          <a class="nav-link nav-link-custom btnValgresultatUtilgjengelig" href="#">Valgresultat</a>
+                      </h1><br />
+                      <img class="pilopp" src="~/bilder/pilopp.png" alt="">
+                      <p> Klikk på valgresultat. Når valget er over vil resultatet være tilgjengelig.</p>
+                      <hr> <br />
+                  }
+                  <h1>
+                      <a class="nav-link nav-link-custom btnErRegistrert" href="#"> Registrer deg</a>
+                  </h1><br />
+                  <img class="pilopp" src="~/bilder/pilopp.png" alt="">
+                  <p>Klikk på registrer deg, velg "Ny Bruker" og registrer deg med USN-adressen din.</p>
+                  <hr><br />
+
+              }
+
+          </div>
+</div>

@@ -1,0 +1,57 @@
+﻿@model Valgapplikasjon.Models.ValgModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Denne kan vi muligens utelate</h1>
+
+<div>
+    <h4>ValgModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Tittel)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Tittel)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartNominering)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartNominering)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SluttNominering)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SluttNominering)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartAvstemming)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartAvstemming)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SluttAvstemming)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SluttAvstemming)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Kontrollert)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Kontrollert)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ValgId">Endre informasjon</a> |
+    <a asp-action="Index">Tilbake til valgoversikt</a>
+</div>
+<br />

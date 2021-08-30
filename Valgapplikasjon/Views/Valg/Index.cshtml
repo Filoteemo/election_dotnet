@@ -1,0 +1,119 @@
+﻿@model IEnumerable<Valgapplikasjon.Models.ValgModel>
+@using Valgapplikasjon.Models;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<p>
+    Dette er en administratorside.<br />
+    Her kan du registrere og endre samt slette informasjon om valg som skal gjennomføres. <br />
+</p>
+
+<div class="valg_registrer">
+    <a asp-action="Create">Registrer nytt valg</a> <br />
+</div>
+
+<div class="valg_mobile">
+    @foreach (var rad in Model)
+    {
+    <form class="kandidatformA">
+        <div class="valg_tittel">
+            <h1>@Html.DisplayFor(modelItem => rad.Tittel)</h1>
+        </div>
+        <hr>
+        <p>
+            <strong>Startnominering: </strong>@Html.DisplayFor(modelItem => rad.StartNominering)
+            <br>
+            <strong>Sluttnominering: </strong>@Html.DisplayFor(modelItem => rad.SluttNominering)
+            <br>
+            <strong>Startavstemming: </strong>@Html.DisplayFor(modelItem => rad.StartAvstemming)
+            <br>
+            <strong>Sluttavstemming: </strong>@Html.DisplayFor(modelItem => rad.SluttAvstemming)
+            <br>
+            <strong>Kontrollert: </strong>@Html.DisplayFor(modelItem => rad.Kontrollert)
+            <br>
+        </p>
+        <ul class="valg_liste">
+            <li>
+                <a asp-action="Edit" asp-route-id="@rad.ValgId">Rediger</a>
+            </li>
+            <li>
+                <a asp-action="Details" asp-route-id="@rad.ValgId">Detaljer</a>
+            </li>
+            <li>
+                <a asp-action="Delete" asp-route-id="@rad.ValgId">Slett</a>
+            </li>
+        </ul>
+    </form>
+        }
+</div>
+<div class="valg_desktop">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Tittel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartNominering)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SluttNominering)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartAvstemming)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SluttAvstemming)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kontrollert)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tittel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartNominering)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SluttNominering)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartAvstemming)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SluttAvstemming)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Kontrollert)
+                </td>
+                </tr>
+                <tr>
+                    <td>
+                    <ul class="valg_liste">
+                        <li>
+                            <a asp-action="Edit" asp-route-id="@item.ValgId">Rediger</a>
+                        </li>
+                        <li>
+                            <a asp-action="Details" asp-route-id="@item.ValgId">Detaljer</a>
+                        </li>
+                        <li>
+                            <a asp-action="Delete" asp-route-id="@item.ValgId">Slett</a>
+                        </li>
+                    </ul>
+                     </td>
+                </tr>
+        }
+    </tbody>
+</table>
+    </div>
+@*Denne filen er laget av Sindre Olsen sist endret 11.05.2021*@
